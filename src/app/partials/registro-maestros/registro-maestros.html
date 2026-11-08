@@ -1,0 +1,246 @@
+<div class="wrapper">
+  <div class="section-registro">
+    <div class="body-registro">
+      <div class="row mt-3 mb-3">
+        <div class="form-group col-12">
+          <label class="title-user" for="tipo_usuario"> Ingresa los datos del maestro </label>
+        </div>
+      </div>
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Id de trabajador</mat-label>
+        <input
+          matInput
+          [(ngModel)]="maestro.id_trabajador"
+          name="id_trabajador"
+          placeholder="ID trabajador"
+          inputmode="numeric"
+          (keydown)="validarMatricula($event)"
+        />
+      </mat-form-field>
+
+      @if (errors.id_trabajador) {
+        <div class="invalid-feedback">{{ errors.id_trabajador }}</div>
+      }
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input
+          matInput
+          [(ngModel)]="maestro.first_name"
+          placeholder="Escribe nombre"
+          (keypress)="soloLetras($event)"
+        />
+      </mat-form-field>
+      @if (errors.first_name) {
+        <div class="invalid-feedback">{{ errors.first_name }}</div>
+      }
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Apellidos</mat-label>
+        <input
+          matInput
+          [(ngModel)]="maestro.last_name"
+          placeholder="Escribe apellidos"
+          (keypress)="soloLetras($event)"
+        />
+      </mat-form-field>
+      @if (errors.last_name) {
+        <div class="invalid-feedback">{{ errors.last_name }}</div>
+      }
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Correo electrónico</mat-label>
+        <input
+          matInput
+          [(ngModel)]="maestro.email"
+          placeholder="Escribe correo electrónico"
+          [disabled]="editar"
+        />
+      </mat-form-field>
+      @if (errors.email) {
+        <div class="invalid-feedback">{{ errors.email }}</div>
+      }
+
+      @if (!editar) {
+        <mat-form-field class="mat-input" appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            [(ngModel)]="maestro.password"
+            [type]="inputType_1"
+            placeholder="Escribe contraseña"
+          />
+          <mat-icon matSuffix class="eye-icon" (click)="showPassword()">
+            {{ hide_1 ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+        </mat-form-field>
+      }
+      @if (errors.password) {
+        <div class="invalid-feedback">{{ errors.password }}</div>
+      }
+
+      @if (!editar) {
+        <mat-form-field class="mat-input" appearance="outline">
+          <mat-label>Confirmar contraseña</mat-label>
+          <input
+            matInput
+            [(ngModel)]="maestro.confirmar_password"
+            [type]="inputType_2"
+            placeholder="Confirma la contraseña"
+          />
+          <mat-icon matSuffix class="eye-icon" (click)="showPwdConfirmar()">
+            {{ hide_2 ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+        </mat-form-field>
+      }
+      @if (errors.confirmar_password) {
+        <div class="invalid-feedback">{{ errors.confirmar_password }}</div>
+      }
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Fecha de nacimiento</mat-label>
+        <input
+          matInput
+          [(ngModel)]="maestro.fecha_nacimiento"
+          [min]="minDate"
+          [max]="maxDate"
+          [matDatepicker]="picker"
+          name="fecha_nacimiento"
+          placeholder="DD/MM/YYYY"
+        />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      @if (errors.fecha_nacimiento) {
+        <div class="invalid-feedback">{{ errors.fecha_nacimiento }}</div>
+      }
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Teléfono</mat-label>
+        <input
+          matInput
+          [(ngModel)]="maestro.telefono"
+          mask="(000) 000-0000"
+          placeholder="Escribe teléfono"
+        />
+      </mat-form-field>
+      @if (errors.telefono) {
+        <div class="invalid-feedback">{{ errors.telefono }}</div>
+      }
+
+      <mat-form-field class="mat-input mat-hint-margin" appearance="outline">
+        <mat-label>RFC</mat-label>
+        <input
+          matInput
+          minlength="12"
+          maxlength="13"
+          [(ngModel)]="maestro.rfc"
+          placeholder="Escribe RFC"
+          style="text-transform: uppercase"
+        />
+        <mat-hint align="end">{{ maestro.rfc?.length || 0 }}/13</mat-hint>
+      </mat-form-field>
+      @if (errors.rfc) {
+        <div class="invalid-feedback">{{ errors.rfc }}</div>
+      }
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Cubículo</mat-label>
+        <input
+          matInput
+          [(ngModel)]="maestro.cubiculo"
+          (ngModelChange)="maestro.cubiculo = $event.toUpperCase()"
+          placeholder="Ej. CCO3-205"
+          maxlength="8"
+        />
+      </mat-form-field>
+      @if (errors.cubiculo) {
+        <div class="invalid-feedback">{{ errors.cubiculo }}</div>
+      }
+
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Área de investigación</mat-label>
+
+        <mat-select [(ngModel)]="maestro.area_investigacion" name="area_investigacion">
+          <mat-option [value]="0" disabled> Selecciona un área </mat-option>
+
+          <mat-option [value]="1">Ciencias Exactas</mat-option>
+          <mat-option [value]="2">Ciencias Naturales</mat-option>
+          <mat-option [value]="3">Ciencias Sociales</mat-option>
+          <mat-option [value]="4">Humanidades</mat-option>
+          <mat-option [value]="5">Ingeniería y Tecnología</mat-option>
+          <mat-option [value]="6">Ciencias de la Salud</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      @if (errors.area_investigacion) {
+        <div class="invalid-feedback">{{ errors.area_investigacion }}</div>
+      }
+
+      <div class="materias-container">
+        <label class="materias-label">Selecciona las materias a impartir</label>
+
+        <div class="materias-lista">
+          <mat-checkbox [(ngModel)]="materiasSeleccionadas.aplicacionesWeb" name="aplicacionesWeb">
+            Aplicaciones Web
+          </mat-checkbox>
+
+          <mat-checkbox [(ngModel)]="materiasSeleccionadas.programacion1" name="programacion1">
+            Programación 1
+          </mat-checkbox>
+
+          <mat-checkbox [(ngModel)]="materiasSeleccionadas.basesDatos" name="basesDatos">
+            Bases de Datos
+          </mat-checkbox>
+          <mat-checkbox [(ngModel)]="materiasSeleccionadas.tecnologiasWeb" name="tecnologiasWeb">
+            Tecnologías Web</mat-checkbox
+          >
+          <mat-checkbox [(ngModel)]="materiasSeleccionadas.mineriaDatos" name="mineriaDatos">
+            Minería de Datos
+          </mat-checkbox>
+          <mat-checkbox [(ngModel)]="materiasSeleccionadas.desarrolloMovil" name="desarrolloMovil">
+            Desarrollo Móvil
+          </mat-checkbox>
+          <mat-checkbox
+            [(ngModel)]="materiasSeleccionadas.estructurasDatos"
+            name="estructurasDatos"
+          >
+            Estructuras de Datos
+          </mat-checkbox>
+          <mat-checkbox
+            [(ngModel)]="materiasSeleccionadas.administracionRedes"
+            name="administracionRedes"
+          >
+            Administración de Redes
+          </mat-checkbox>
+          <mat-checkbox
+            [(ngModel)]="materiasSeleccionadas.ingenieriaSoftware"
+            name="ingenieriaSoftware"
+          >
+            Ingeniería de Software
+          </mat-checkbox>
+          <mat-checkbox
+            [(ngModel)]="materiasSeleccionadas.administracionSO"
+            name="administracionSO"
+          >
+            Administración de S.O.
+          </mat-checkbox>
+        </div>
+      </div>
+
+      <div class="section-buttons">
+        <button class="btn btn-danger" (click)="regresar()">Cancelar</button>
+
+        @if (!editar) {
+          <button class="btn btn-primary" type="submit" (click)="registrar()">Registrar</button>
+        }
+
+        @if (editar) {
+          <button class="btn btn-primary" type="submit" (click)="actualizar()">Actualizar</button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
